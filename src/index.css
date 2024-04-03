@@ -1,0 +1,8 @@
+* {
+  background: #242424;
+}
+
+body {
+  display: flex;
+  align-items: center;
+}
