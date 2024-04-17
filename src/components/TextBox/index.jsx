@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import Word from "../Word";
 import "./index.css";
 import { generate } from "random-words";
 
-const TextBox = ({ words }) => {
+const TextBox = () => {
+  const size = 5;
+  const [words, setWords] = useState(
+    generate(size).reduce((arr, curr, index) => {
+      arr.push(curr);
+      if (index < size - 1) {
+        arr.push(" ");
+      }
+      return arr;
+    }, []),
+  );
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [activeLetterIndex, setActiveLetterIndex] = useState(0);
   const [colors, setColors] = useState(
@@ -19,8 +28,32 @@ const TextBox = ({ words }) => {
       const newColors = JSON.parse(JSON.stringify(colors));
       const isLetterOrSpace = /^[a-zA-Z\s]$/.test(pressedKey);
 
-      if (activeWordIndex >= words.length || !isLetterOrSpace) {
-        words.append(generate(10));
+      if (!isLetterOrSpace) {
+        return;
+      }
+
+      if (
+        activeWordIndex >= words.length - 1 &&
+        activeLetterIndex >= words[activeWordIndex].length - 1
+      ) {
+        const resetWords = generate(size).reduce((arr, curr, index) => {
+          arr.push(curr);
+          if (index < size - 1) {
+            arr.push(" ");
+          }
+          return arr;
+        }, []);
+
+        setWords(resetWords);
+
+        const resetColors = resetWords.map((row) =>
+          row.split("").map(() => ({ r: 24, g: 24, b: 24, a: 0 })),
+        );
+
+        setColors(resetColors);
+
+        setActiveWordIndex(0);
+        setActiveLetterIndex(0);
         return;
       }
 
@@ -70,10 +103,6 @@ const TextBox = ({ words }) => {
       })}
     </div>
   );
-};
-
-TextBox.propTypes = {
-  words: PropTypes.arrayOf(String).isRequired,
 };
 
 export default TextBox;
