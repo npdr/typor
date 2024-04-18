@@ -4,7 +4,7 @@ import "./index.css";
 import { generate } from "random-words";
 
 const TextBox = () => {
-  const size = 5;
+  const size = 20;
   const [words, setWords] = useState(
     generate(size).reduce((arr, curr, index) => {
       arr.push(curr);
@@ -97,7 +97,7 @@ const TextBox = () => {
   }, [activeWordIndex, activeLetterIndex, words, colors]);
 
   return (
-    <div className="textBox-container">
+    <div className="textBox-container" onClick={focus()}>
       {words.map((word, index) => {
         return <Word key={index} word={word} colors={colors[index]} />;
       })}
