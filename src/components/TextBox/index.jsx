@@ -25,11 +25,7 @@ const TextBox = () => {
   const focusRef = useRef(null);
 
   const showKeyboard = () => {
-    console.log("focusing...");
-    focusRef.current.focus();
-    if (focusRef.current == document.activeElement) {
-      console.log("worked!!!");
-    }
+    focusRef.current.querySelector("input").focus();
   };
 
   useEffect(() => {
