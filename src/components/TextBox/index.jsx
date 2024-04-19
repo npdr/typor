@@ -113,6 +113,10 @@ const TextBox = () => {
       onClick={showKeyboard}
       tabIndex={0}
     >
+      <input
+        type="text"
+        style={{ opacity: 0, position: "absolute", zIndex: -1 }}
+      />
       {words.map((word, index) => {
         return <Word key={index} word={word} colors={colors[index]} />;
       })}
