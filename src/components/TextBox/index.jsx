@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Word from "../Word";
 import "./index.css";
 import { generate } from "random-words";
@@ -21,6 +21,16 @@ const TextBox = () => {
       row.split("").map(() => ({ r: 24, g: 24, b: 24, a: 0 })),
     ),
   );
+
+  const focusRef = useRef(null);
+
+  const showKeyboard = () => {
+    console.log("focusing...");
+    focusRef.current.focus();
+    if (focusRef.current == document.activeElement) {
+      console.log("worked!!!");
+    }
+  };
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -97,7 +107,12 @@ const TextBox = () => {
   }, [activeWordIndex, activeLetterIndex, words, colors]);
 
   return (
-    <div className="textBox-container" onClick={focus()}>
+    <div
+      ref={focusRef}
+      className="textBox-container"
+      onClick={showKeyboard}
+      tabIndex={0}
+    >
       {words.map((word, index) => {
         return <Word key={index} word={word} colors={colors[index]} />;
       })}
