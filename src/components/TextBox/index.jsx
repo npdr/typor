@@ -30,7 +30,7 @@ const TextBox = () => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      const pressedKey = event.key;
+      const pressedKey = event.target.value[event.target.value.length - 1];
       const newColors = JSON.parse(JSON.stringify(colors));
       const isLetterOrSpace = /^[a-zA-Z\s]$/.test(pressedKey);
 
@@ -95,10 +95,14 @@ const TextBox = () => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyPress);
+    focusRef.current
+      .querySelector("input")
+      .addEventListener("input", handleKeyPress);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyPress);
+      focusRef.current
+        .querySelector("input")
+        .removeEventListener("input", handleKeyPress);
     };
   }, [activeWordIndex, activeLetterIndex, words, colors]);
 
